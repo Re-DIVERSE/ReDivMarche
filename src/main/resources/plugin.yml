@@ -1,0 +1,4 @@
+name: ReDivMarche
+version: ${project.version}
+main: com.github.aburaagetarou.redivmarche.ReDivMarche
+api-version: 1.16
