@@ -234,13 +234,7 @@ public class ShopDataManager {
 	 */
 	public static boolean addProduct(ProductData product) {
 
-		Connection con = null;
-		try {
-			// オープン
-			con = ReDivMarche.dataSource.getConnection();
-
-			// トランザクション開始
-			con.setAutoCommit(false);
+		try(Connection con = ReDivMarche.dataSource.getConnection()) {
 
 			// SQL文作成
 			StringBuilder sql = new StringBuilder();
@@ -282,27 +276,7 @@ public class ShopDataManager {
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
-
-			try {
-				// ロールバック
-				if(con != null)	con.rollback();
-			}
-			catch (SQLException e2) {
-				e2.printStackTrace();
-			}
 			return false;
-		}
-		finally {
-			try {
-				// トランザクション終了
-				if (con != null) {
-					con.setAutoCommit(true);
-					con.close();
-				}
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -313,17 +287,11 @@ public class ShopDataManager {
 	 */
 	public static boolean removeProduct(String seller, short slot, short logType) {
 
-		Connection con = null;
-		try {
-			// オープン
-			con = ReDivMarche.dataSource.getConnection();
+		try(Connection con = ReDivMarche.dataSource.getConnection()) {
 
 			// 商品を読み込み
 			ProductData product = loadProduct(seller, slot);
 			if(product == null) return false;
-
-			// トランザクション開始
-			con.setAutoCommit(false);
 
 			// SQL文作成
 			StringBuilder sql = new StringBuilder();
@@ -353,27 +321,7 @@ public class ShopDataManager {
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
-
-			try {
-				// ロールバック
-				if(con != null)	con.rollback();
-			}
-			catch (SQLException e2) {
-				e2.printStackTrace();
-			}
 			return false;
-		}
-		finally {
-			try {
-				// トランザクション終了
-				if (con != null) {
-					con.setAutoCommit(true);
-					con.close();
-				}
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
