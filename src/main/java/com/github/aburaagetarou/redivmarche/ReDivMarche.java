@@ -51,13 +51,14 @@ public final class ReDivMarche extends JavaPlugin {
 		reloadConfig();
 
 		// 設定内容を取得
-		String address  = getConfig().getString("server.address");
-		int    port     = getConfig().getInt("server.port");
-		String user     = getConfig().getString("server.user");
-		String pass     = getConfig().getString("server.password");
-		String schema   = getConfig().getString("server.schema");
-		String driver   = getConfig().getString("database.class_name");
-		int    lifespan = getConfig().getInt("database.lifespan");
+		String address     = getConfig().getString("server.address");
+		int    port        = getConfig().getInt("server.port");
+		String user        = getConfig().getString("server.user");
+		String pass        = getConfig().getString("server.password");
+		String schema      = getConfig().getString("server.schema");
+		String driver      = getConfig().getString("database.class_name");
+		int    lifespan    = getConfig().getInt("database.lifespan");
+		int    maxPoolSize = getConfig().getInt("database.max_pool_size", 1);
 
 		// Nullチェック
 		if(!Utilities.strNullCheck(address, user, pass, schema, driver)){
@@ -92,6 +93,11 @@ public final class ReDivMarche extends JavaPlugin {
 		// ライフスパン
 		if(lifespan > 0) {
 			dataSource.setMaxLifetime(TimeUnit.MINUTES.toMillis(lifespan));
+		}
+
+		if (maxPoolSize > 0) {
+			dataSource.setMaximumPoolSize(maxPoolSize);
+			dataSource.setMinimumIdle(maxPoolSize);
 		}
 
 		try {
