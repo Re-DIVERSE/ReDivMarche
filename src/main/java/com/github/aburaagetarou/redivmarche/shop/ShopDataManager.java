@@ -266,10 +266,6 @@ public class ShopDataManager {
 			// SQL文実行
 			int count = stmt.executeUpdate();
 
-			// ロールバック・コミット
-			if(count != 1) con.rollback();
-			else           con.commit();
-
 			// クローズ
 			stmt.close();
 			return count == 1;
@@ -308,12 +304,8 @@ public class ShopDataManager {
 			int count = stmt.executeUpdate();
 
 			// ロールバック・コミット
-			if(count != 1) con.rollback();
-			else {
-				// ロギング
-				writeLog(con, product, logType);
-				con.commit();
-			}
+			// ロギング
+			writeLog(con, product, logType);
 
 			// クローズ
 			stmt.close();
